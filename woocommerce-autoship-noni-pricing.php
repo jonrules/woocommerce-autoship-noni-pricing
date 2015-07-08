@@ -41,13 +41,13 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 	 * @param double $autoship_price
 	 * @param int $product_id
 	 */
-	function wc_autoship_noni_pricing_current_role( $autoship_price, $product_id ) {
-		if ( ! is_user_logged_in() ) {
+	function wc_autoship_noni_pricing_current_role( $autoship_price, $product_id, $autoship_frequency, $customer_id ) {
+		if ( empty( $customer_id ) ) {
 			// User is not logged in
 			return $autoship_price;
 		}
 		// Get current user
-		$user = wp_get_current_user();
+		$user = get_user_by( 'id', $customer_id );
 		if ( ! $user->ID ) {
 			// User is not logged in
 			return $autoship_price;
@@ -81,5 +81,5 @@ if ( is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 		// Default
 		return $autoship_price;
 	}
-	add_filter( 'wc_autoship_price', 'wc_autoship_noni_pricing_current_role', 10, 2 );
+	add_filter( 'wc_autoship_price', 'wc_autoship_noni_pricing_current_role', 10, 4 );
 }
